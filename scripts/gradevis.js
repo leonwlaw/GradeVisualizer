@@ -14,12 +14,25 @@ function main() {
     displayPrediction(scores, $(".prediction"));
   }
 
-  function addNewAssignment() {
+  // Wrapper around addNewAssignmentEvent so that the jQuery click
+  // event object isn't passed onto addNewAssignment.
+  function addNewAssignmentEvent() {
+    addNewAssignment();
+  }
+
+  function addNewAssignment(name, weight, score) {
     // The template exists in the HTML file, so that we don't have to
     // build the assignment row from scratch. This is more readable!
     var assignmentRow = $('tr.template').clone();
     assignmentRow.removeClass('template');
-    assignmentRow.find('input[type=text]').change(updatePrediction);
+
+    var inputs = assignmentRow.find('input[type=text]');
+    inputs.change(updatePrediction);
+
+    $(inputs.get(0)).val(name);
+    $(inputs.get(1)).val(weight);
+    $(inputs.get(2)).val(score);
+
     assignmentRow.find('.remove-assignment').click(removeAssignment);
 
     // The last child of the table body is the "Add new Assignment"
@@ -28,7 +41,10 @@ function main() {
     $('table.score tbody tr:last-child').before(assignmentRow);
 
     // The user probably wants to start changing the assignment details
-    assignmentRow.find('td:first-child input[type=text]').focus();
+    // if name wasn't specified
+    if (!name || !name.length) {
+      assignmentRow.find('td:first-child input[type=text]').focus();
+    }
   }
 
   // Event handler to remove an assignment row from its owning table.
@@ -41,8 +57,16 @@ function main() {
 
   $('input[type=text]').change(updatePrediction);
   updatePrediction();
-  $('.add-assignment').click(addNewAssignment);
+  $('.add-assignment').click(addNewAssignmentEvent);
   $('.remove-assignment').click(removeAssignment);
+
+  // Add some default assignments
+  addNewAssignment("Homework 1");
+  addNewAssignment("Homework 2");
+  addNewAssignment("Homework 3");
+  addNewAssignment("Midterm 1");
+  addNewAssignment("Midterm 2");
+  addNewAssignment("Final");
 }
 
 

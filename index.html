@@ -73,6 +73,23 @@
             <tr>
               <th>Assignment Type</th><th>Weight</th><th>Score</th><th></th>
             </tr>
+            <!-- This element will be used as a basis for all the other assignment rows -->
+            <tr class="template">
+              <td><input type="text" class="form-control" placeholder="New Assignment" /></td>
+              <td>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Pending" />
+                  <span class="input-group-addon">%</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Pending" />
+                  <span class="input-group-addon">%</span>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn-danger btn-xs remove-assignment"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
+            </tr>
             <tr>
               <td><input type="text" class="form-control" value="Homework 1" /></td>
               <td>
@@ -87,7 +104,7 @@
                   <span class="input-group-addon">%</span>
                 </div>
               </td>
-              <td><button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
+              <td><button type="button" class="btn btn-danger btn-xs remove-assignment"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
             </tr>
             <tr>
               <td><input type="text" class="form-control" value="Homework 2" /></td>
@@ -103,7 +120,7 @@
                   <span class="input-group-addon">%</span>
                 </div>
               </td>
-              <td><button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
+              <td><button type="button" class="btn btn-danger btn-xs remove-assignment"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
             </tr>
             <tr>
               <td><input type="text" class="form-control" value="Homework 3" /></td>
@@ -119,7 +136,7 @@
                   <span class="input-group-addon">%</span>
                 </div>
               </td>
-              <td><button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
+              <td><button type="button" class="btn btn-danger btn-xs remove-assignment"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
             </tr>
             <tr>
               <td><input type="text" class="form-control" value="Midterm 1" /></td>
@@ -135,7 +152,7 @@
                   <span class="input-group-addon">%</span>
                 </div>
               </td>
-              <td><button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
+              <td><button type="button" class="btn btn-danger btn-xs remove-assignment"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
             </tr>
             <tr>
               <td><input type="text" class="form-control" value="Midterm 2" /></td>
@@ -151,7 +168,7 @@
                   <span class="input-group-addon">%</span>
                 </div>
               </td>
-              <td><button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
+              <td><button type="button" class="btn btn-danger btn-xs remove-assignment"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
             </tr>
             <tr>
               <td><input type="text" class="form-control" value="Final" /></td>
@@ -167,11 +184,11 @@
                   <span class="input-group-addon">%</span>
                 </div>
               </td>
-              <td><button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
+              <td><button type="button" class="btn btn-danger btn-xs remove-assignment"><span class="glyphicon glyphicon-minus-sign"></span></button></td>
             </tr>
             <tr>
               <td colspan="4">
-                <button type="button" class="btn btn-default">
+                <button type="button" class="btn btn-default add-assignment">
                   Add Assignment
                 </button>
               </td>

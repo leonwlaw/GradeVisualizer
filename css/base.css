@@ -64,3 +64,9 @@ table.score td:first-child {
   type will end up truncated, even on wide screens. */
   min-width: 150px;
 }
+
+tr.template {
+  /* We don't want to show the template assignment row. This is only an
+  implementation detail to simplify our lives on the scripting side. */
+  display: none;
+}

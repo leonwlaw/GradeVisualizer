@@ -14,8 +14,32 @@ function main() {
     displayPrediction(scores, $(".prediction"));
   }
 
+  function addNewAssignment() {
+    // The template exists in the HTML file, so that we don't have to
+    // build the assignment row from scratch. This is more readable!
+    var assignmentRow = $('tr.template').clone();
+    assignmentRow.removeClass('template');
+    assignmentRow.find('input[type=text]').change(updatePrediction);
+    assignmentRow.find('.remove-assignment').click(removeAssignment);
+
+    // The last child of the table body is the "Add new Assignment"
+    // button, and we definitely want the assignment to come before
+    // that.
+    $('table.score tbody tr:last-child').before(assignmentRow);
+  }
+
+  // Event handler to remove an assignment row from its owning table.
+  function removeAssignment() {
+    // Go up the DOM tree to find the table row
+    // table -> tbody -> tr -> td -> input(remove button)
+    $(this).parent().parent().remove();
+    updatePrediction();
+  }
+
   $('input[type=text]').change(updatePrediction);
   updatePrediction();
+  $('.add-assignment').click(addNewAssignment);
+  $('.remove-assignment').click(removeAssignment);
 }
 
 

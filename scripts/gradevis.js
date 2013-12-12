@@ -59,15 +59,14 @@ function calculateScores(assignments) {
     var earned = assignment.weight * assignment.score / 100;
     // Ignore if user didn't specify weight
     if (assignment.weight !== null) {
-      // If user didn't specify score, treat it as in-progress.
       if (assignment.score !== null) {
         scores[SCORE.EARNED] += earned;
         scores[SCORE.LOST] += assignment.weight - earned;
-      } else {
-        scores[SCORE.PROGRESS] += assignment.weight;
       }
     }
   }
+  scores[SCORE.PROGRESS] = (100 - scores[SCORE.EARNED]
+    - scores[SCORE.LOST]);
   return scores;
 }
 

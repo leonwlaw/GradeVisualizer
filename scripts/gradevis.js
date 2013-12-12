@@ -26,6 +26,9 @@ function main() {
     // button, and we definitely want the assignment to come before
     // that.
     $('table.score tbody tr:last-child').before(assignmentRow);
+
+    // The user probably wants to start changing the assignment details
+    assignmentRow.find('td:first-child input[type=text]').focus();
   }
 
   // Event handler to remove an assignment row from its owning table.

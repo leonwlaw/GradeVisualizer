@@ -197,7 +197,10 @@ function displayPrediction(scores, predictionDiv) {
 
 function saveGrades() {
   var classname = $('.class-name').html();
-  var classid = parseInt($('.class-id').html());
+  var classidstr = $('.class-id').html();
+  // When classidstr is not yet set, the DOM will have it set to "".
+  // Trying to parseInt will give NaN and break the backend.
+  var classid = (classidstr) ? parseInt(classidstr) : null;
   var assignments = getAssignments($('table.score'));
   $.ajax({
     type: 'POST',
@@ -209,7 +212,7 @@ function saveGrades() {
     }
   }).success(function(data, status, jqXHR) {
     // The server will return to us a class id.
-    var classid = data;
+    var classid = parseInt(data);
     $('.class-id').html(classid);
   });
 }

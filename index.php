@@ -1,3 +1,36 @@
+<?php
+require_once('./backend/db.php');
+
+function getClassList($u_id) {
+  $mysqli = connect_to_db();
+  $stmt = $mysqli->prepare("SELECT c_id, name FROM classes WHERE u_id=?");
+  $stmt->bind_param('i', $u_id);
+  $stmt->bind_result($c_id, $name);
+  $stmt->execute();
+  $stmt->store_result();
+
+  $classes = array();
+  for ($i = 0; $i < $stmt->num_rows; ++$i) {
+    $stmt->fetch();
+    $classes[$i] = array('id'=>$c_id, 'name'=>$name);
+  }
+  return $classes;
+}
+
+function formatClassList($classList) {
+  if (count($classList) > 0) {
+    foreach ($classList as $class) {
+      ?><li><a href="#"><?php echo $class['name']; ?></a></li><?
+    }
+  } else {
+    ?><li class='disabled'><a href="#">No classes found.</a></li><?
+  }
+}
+
+$u_id = 0;
+$classList = getClassList($u_id);
+
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -46,9 +79,7 @@
                 Load Grades <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Calculus</a></li>
-                <li><a href="#">English</a></li>
-                <li><a href="#">Philosophy</a></li>
+                <?php formatClassList($classList); ?>
               </ul>
             </div>
             <div class="btn-group">
@@ -59,9 +90,7 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Calculus</a></li>
-                <li><a href="#">English</a></li>
-                <li><a href="#">Philosophy</a></li>
+                <?php formatClassList($classList); ?>
                 <li class="divider"></li>
                 <li><a href="#">New class...</a></li>
               </ul>

@@ -48,13 +48,19 @@ div.class-heading {
 }
 
 /*********************************************
-Class heading Styles
+Table styles
 
-These are things that come before the class details.
+Make sure the table looks nice!
 *********************************************/
 
 table.score {
   /* Override bootstrap's default table width:100%, so that text fields
   inside the table don't end up over-stretching it. */
   width: auto;
+}
+
+table.score td:first-child {
+  /* If we don't define a minimum width, the text inside each assignment
+  type will end up truncated, even on wide screens. */
+  min-width: 150px;
 }

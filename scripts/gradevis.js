@@ -8,6 +8,7 @@ load/save their grades to the server.
 *********************************************/
 
 function main() {
+  var nextAssignmentId = 0;
   function updatePrediction() {
     var assignments = getAssignments($('table.score'));
     var scores = calculateScores(assignments);
@@ -20,7 +21,7 @@ function main() {
     addNewAssignment();
   }
 
-  function addNewAssignment(name, weight, score) {
+  function addNewAssignment(name, weight, score, id) {
     // The template exists in the HTML file, so that we don't have to
     // build the assignment row from scratch. This is more readable!
     var assignmentRow = $('tr.template').clone();
@@ -32,6 +33,11 @@ function main() {
     $(inputs.get(0)).val(name);
     $(inputs.get(1)).val(weight);
     $(inputs.get(2)).val(score);
+
+    if (id === undefined || id === null || id == "") {
+      id = nextAssignmentId++;
+    }
+    assignmentRow.find('.assignment-id').html(id);
 
     assignmentRow.find('.remove-assignment').click(removeAssignment);
 
@@ -59,6 +65,8 @@ function main() {
   updatePrediction();
   $('.add-assignment').click(addNewAssignmentEvent);
   $('.remove-assignment').click(removeAssignment);
+
+  $('.save-grades').click(saveGrades);
 
   // Add some default assignments
   addNewAssignment("Homework 1");
@@ -91,10 +99,11 @@ Function/Object Definitions
 *********************************************/
 
 // Data structure used to hold Assignment data.
-function Assignment(name, weight, score) {
+function Assignment(name, weight, score, id) {
   this.name = name;
   this.weight = weight;
   this.score = score;
+  this.id = id;
   return this;
 };
 
@@ -126,13 +135,15 @@ function getAssignments(scoreTable) {
   var assignments = [];
   scoreTable.find('tr').each(function() {
     var inputs = $(this).find('input[type=text]');
-    if (inputs.length) {
+    if (inputs.length && !$(this).hasClass('template')) {
       var weight = $(inputs[SCORE_ROW.WEIGHT]).val();
       weight = weight ? parseFloat(weight) : null;
       var score = $(inputs[SCORE_ROW.SCORE]).val();
       score = score ? parseFloat(score) : null;
+      var id = $(this).find('.assignment-id').html();
+      id = id ? parseInt(id) : null;
       assignments.push(new Assignment($(inputs[SCORE_ROW.NAME]).val(), weight,
-        score));
+        score, id));
     }
   });
   return assignments;
@@ -182,5 +193,26 @@ function displayPrediction(scores, predictionDiv) {
   predictionDiv.find('.minimum-score').html(scoreToGradeLetter(
     scores[SCORE.EARNED]));
 }
+
+
+function saveGrades() {
+  var classname = $('.class-name').html();
+  var classid = parseInt($('.class-id').html());
+  var assignments = getAssignments($('table.score'));
+  $.ajax({
+    type: 'POST',
+    url: './save/',
+    data: {
+      classname: classname,
+      classid: classid,
+      assignments: assignments,
+    }
+  }).success(function(data, status, jqXHR) {
+    // The server will return to us a class id.
+    var classid = data;
+    $('.class-id').html(classid);
+  });
+}
+
 
 $(main)

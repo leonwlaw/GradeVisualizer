@@ -70,3 +70,16 @@ tr.template {
   implementation detail to simplify our lives on the scripting side. */
   display: none;
 }
+
+.class-id {
+  /* We don't want to show what the assignment ID is. These are
+  implementation details used to identify an unique assignment. */
+  display: none;
+}
+
+
+.assignment-id {
+  /* We don't want to show what the assignment ID is. These are
+  implementation details used to identify an unique assignment. */
+  display: none;
+}

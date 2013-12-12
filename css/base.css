@@ -1,0 +1,60 @@
+/*********************************************
+Stylesheet for GradeVisualizer
+
+*********************************************/
+
+/*********************************************
+Header Styles
+
+Adds some whitespace so that it does not look cramped in vertical
+orientation.
+*********************************************/
+
+.header {
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  margin-bottom: 0;
+}
+
+/*********************************************
+Header Byline
+
+This shouldn't be too distracting for the user.
+*********************************************/
+h1+div {
+  color: gray;
+  font-style: italic;
+}
+
+/*********************************************
+Class heading Styles
+
+These are things that come before the class details.
+
+This class exists because of the use of the bootstrap grid system.
+The default margin settings cause the load/save buttons to be misaligned
+with respect to the "Your Grades..." header, so override them for a
+consistent look.
+*********************************************/
+div.class-heading {
+  margin-bottom: 20px;
+}
+
+.class-heading h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/*********************************************
+Class heading Styles
+
+These are things that come before the class details.
+*********************************************/
+
+table.score {
+  /* Override bootstrap's default table width:100%, so that text fields
+  inside the table don't end up over-stretching it. */
+  width: auto;
+}

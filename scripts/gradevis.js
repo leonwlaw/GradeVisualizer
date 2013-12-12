@@ -89,6 +89,20 @@ function getAssignments(scoreTable) {
 }
 
 
+function scoreToGradeLetter(score) {
+  if (score >= 90) {
+    return 'A';
+  } else if (score >= 80) {
+    return 'B';
+  } else if (score >= 70) {
+    return 'C';
+  } else if (score >= 60) {
+    return 'D';
+  }
+  return 'F';
+}
+
+
 function displayPrediction(scores, predictionDiv) {
   // Update the progressbar to display the current values.
   for (var type in scores) {
@@ -100,6 +114,23 @@ function displayPrediction(scores, predictionDiv) {
       .css('display', (scores[type] > 0) ? 'block' : 'none')
       .css('width', scores[type]+'%');
   }
+
+  // Update the letter grades
+  // Expected score is a linear extrapolation of the student's past
+  // performance. We take their average performance and expand it to
+  // a scale of 100%.
+  predictionDiv.find('.expected-score').html(scoreToGradeLetter(
+    scores[SCORE.EARNED] / (scores[SCORE.EARNED] + scores[SCORE.LOST]) * 100));
+  // Maximum score assumes the student gets 100% on remaining
+  // assignments.
+  predictionDiv.find('.maximum-score').html(scoreToGradeLetter(
+    100 - scores[SCORE.LOST]));
+  // Median score assumes the student gets 50% on remaining assignments.
+  predictionDiv.find('.median-score').html(scoreToGradeLetter(
+    scores[SCORE.EARNED] + 0.5 * scores[SCORE.PROGRESS]));
+  // Minimum score assumes the student gets 0% on remaining assignments.
+  predictionDiv.find('.minimum-score').html(scoreToGradeLetter(
+    scores[SCORE.EARNED]));
 }
 
 $(main)

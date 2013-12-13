@@ -21,7 +21,7 @@ function formatClassList($classList) {
   if (count($classList) > 0) {
     foreach ($classList as $class) {
       ?><li><a href="#" class='load-grades'>
-      <?php echo ($class['name']) ? $class['name'] : "Untitled"; ?>
+      <span class="class-name"><?php echo ($class['name']) ? $class['name'] : "Untitled"; ?></span>
       <span class="class-id"><?php echo $class['id']; ?></span></a></li><?
     }
   } else {

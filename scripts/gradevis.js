@@ -244,6 +244,16 @@ function saveGrades() {
     // The server will return to us a class id.
     var classid = parseInt(data);
     $('.current.class-id').html(classid);
+
+    // Update the load-grade entry with the new name
+    var load_grade_links = $('.load-grades .class-id');
+    for (var i = 0; i < load_grade_links.length; ++i) {
+      var grade_link = $(load_grade_links[i]);
+      if (parseInt(grade_link.html()) == classid) {
+        grade_link.parent().find('.class-name').html(classname);
+        break;
+      }
+    }
   });
 }
 

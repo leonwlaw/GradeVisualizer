@@ -76,8 +76,11 @@ function main() {
       data: {
         classid: classid,
       }
-    }).success(function(assignments, status, jqXHR) {
-      // The server will return to us a list of assignments.
+    }).success(function(data, status, jqXHR) {
+      var classname = data['classname'];
+      var assignments = data['assignments'];
+
+      $('.current.class-name').val(classname);
       $('tr:not(.template) td .remove-assignment').click();
       for (var i in assignments) {
         var assignment = assignments[i];
@@ -239,7 +242,7 @@ function saveGrades() {
   }).success(function(data, status, jqXHR) {
     // The server will return to us a class id.
     var classid = parseInt(data);
-    $('.class-id').html(classid);
+    $('.current.class-id').html(classid);
   });
 }
 

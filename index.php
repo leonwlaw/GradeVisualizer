@@ -70,7 +70,7 @@ $classList = getClassList($u_id);
           </div>
         </div>
         <div class="col-md-6 class-heading">
-          <h2 class="class-heading">Your Grades for <input type="text" class="form-control class-name" placeholder="Class Name" /><span class="class-id"></span></h2>
+          <h2 class="class-heading">Your Grades for <input type="text" class="form-control current class-name" placeholder="Class Name" /><span class="current class-id"></span></h2>
         </div>
         <div class="col-md-6 class-heading">
           <div class="btn-group">

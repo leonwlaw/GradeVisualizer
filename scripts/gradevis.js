@@ -81,6 +81,7 @@ function main() {
       var assignments = data['assignments'];
 
       $('.current.class-name').val(classname);
+      $('.current.class-id').html(classid);
       $('tr:not(.template) td .remove-assignment').click();
       for (var i in assignments) {
         var assignment = assignments[i];

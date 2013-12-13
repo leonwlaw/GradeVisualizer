@@ -20,7 +20,9 @@ function getClassList($u_id) {
 function formatClassList($classList) {
   if (count($classList) > 0) {
     foreach ($classList as $class) {
-      ?><li><a href="#" class='load-grades'><?php echo $class['name']; ?><span class="class-id"><?php echo $class['id']; ?></span></a></li><?
+      ?><li><a href="#" class='load-grades'>
+      <?php echo ($class['name']) ? $class['name'] : "Untitled"; ?>
+      <span class="class-id"><?php echo $class['id']; ?></span></a></li><?
     }
   } else {
     ?><li class='disabled'><a href="#">No classes found.</a></li><?
@@ -90,8 +92,6 @@ $classList = getClassList($u_id);
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <?php formatClassList($classList); ?>
-                <li class="divider"></li>
                 <li><a href="#">New class...</a></li>
               </ul>
             </div>

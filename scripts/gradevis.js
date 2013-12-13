@@ -61,12 +61,38 @@ function main() {
     updatePrediction();
   }
 
+  function loadGradesEvent() {
+    var classid = parseInt($(this).find('.class-id').html());
+    if (!isNaN(classid)) {
+      loadGrades(classid);
+    }
+    return false;
+  }
+
+  function loadGrades(classid) {
+    $.ajax({
+      url: './load/',
+      dataType: 'json',
+      data: {
+        classid: classid,
+      }
+    }).success(function(assignments, status, jqXHR) {
+      // The server will return to us a list of assignments.
+      $('tr:not(.template) td .remove-assignment').click();
+      for (var i in assignments) {
+        var assignment = assignments[i];
+        addNewAssignment(assignment.name, assignment.weight, assignment.score, assignment.id);
+      }
+    });
+  }
+
   $('input[type=text]').change(updatePrediction);
   updatePrediction();
   $('.add-assignment').click(addNewAssignmentEvent);
   $('.remove-assignment').click(removeAssignment);
 
   $('.save-grades').click(saveGrades);
+  $('.load-grades').click(loadGradesEvent);
 
   // Add some default assignments
   addNewAssignment("Homework 1");

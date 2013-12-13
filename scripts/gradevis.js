@@ -222,7 +222,7 @@ function displayPrediction(scores, predictionDiv) {
 
 
 function saveGrades() {
-  var classname = $('.class-name').html();
+  var classname = $('.class-name').val();
   var classidstr = $('.class-id').html();
   // When classidstr is not yet set, the DOM will have it set to "".
   // Trying to parseInt will give NaN and break the backend.

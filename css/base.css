@@ -47,6 +47,12 @@ div.class-heading {
   margin-bottom: 0;
 }
 
+.class-heading .class-name {
+  height: 120%;
+  width: auto;
+  display: inline;
+}
+
 /*********************************************
 Table styles
 

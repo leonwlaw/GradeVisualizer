@@ -17,6 +17,7 @@ function main() {
   $('.remove-assignment').click(removeAssignment);
 
   $('.save-grades').click(saveGrades);
+  $('.save-new-grades').click(saveGradesNew);
   $('.load-grades').click(loadGradesEvent);
 
   // Add some default assignments
@@ -180,6 +181,12 @@ function saveGrades() {
       }
     }
   });
+}
+
+
+function saveGradesNew() {
+  var classidstr = $('.class-id').html("");
+  saveGrades();
 }
 
 

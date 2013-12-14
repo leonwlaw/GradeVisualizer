@@ -105,7 +105,7 @@ $classList = getClassList($u_id);
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">New class...</a></li>
+                <li><a href="#" class="save-new-grades">New class...</a></li>
               </ul>
             </div>
           </div>

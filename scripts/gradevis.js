@@ -20,6 +20,8 @@ function main() {
   $('.save-new-grades').click(saveGradesNew);
   $('.load-grades').click(loadGradesEvent);
 
+  showClasses([]);
+
   // Add some default assignments
   addNewAssignment("Homework 1");
   addNewAssignment("Homework 2");
@@ -204,7 +206,7 @@ function initFacebook() {
   // This testAPI() function is only called in those cases.
   function testAPI() {
     FB.api('/me', function(response) {
-      showClasses(response.id);
+      updateClassesList(response.id);
     });
   }
 
@@ -277,7 +279,7 @@ function loadGrades(classid) {
   });
 }
 
-function showClasses(u_id) {
+function updateClassesList(u_id) {
   $.ajax({
     url: './classes/',
     dataType: 'json',
@@ -285,28 +287,34 @@ function showClasses(u_id) {
       u_id: u_id
     }
   }).success(function(classes, status, jqXHR) {
-    var classlist = $('.class-list');
-    $('li.load-grades:not(.template)').remove();
-
-    for (var i in classes) {
-      var classLink = $('.load-grades.template').clone();
-      classLink.find('.class-name').html(classes[i].name.length ? classes[i].name : "Untitled");
-      classLink.find('.class-id').html(classes[i].id);
-      classLink.removeClass('template');
-      classLink.click(loadGradesEvent);
-      classlist.append(classLink);
-    }
-
-    if (classes.length == 0) {
-      var classLink = $('.load-grades.template').clone();
-      classLink.find('.class-name').html("No classes found! Save a class to populate this list.");
-      classLink.removeClass('template')
-        .addClass('disabled')
-        .click(loadGradesEvent);
-      classlist.append(classLink);
-    }
+    showClasses(classes);
   })
 }
+
+function showClasses(classes) {
+  var classlist = $('.class-list');
+  $('li.load-grades:not(.template)').remove();
+
+  for (var i in classes) {
+    var classLink = $('.load-grades.template').clone();
+    classLink.find('.class-name').html(classes[i].name.length ? classes[i].name : "Untitled");
+    classLink.find('.class-id').html(classes[i].id);
+    classLink.removeClass('template');
+    classLink.click(loadGradesEvent);
+    classlist.append(classLink);
+  }
+
+  if (classes.length == 0) {
+    var classLink = $('.load-grades.template').clone();
+    classLink.find('.class-name').html("No classes found! Save a class to populate this list.");
+    classLink.removeClass('template')
+      .addClass('disabled')
+      .click(loadGradesEvent);
+    classlist.append(classLink);
+  }
+}
+
+
 
 // Wrapper around addNewAssignmentEvent so that the jQuery click
 // event object isn't passed onto addNewAssignment.

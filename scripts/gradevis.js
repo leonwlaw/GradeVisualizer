@@ -272,6 +272,11 @@ function loadGrades(classid) {
     $('.current.class-name').val(classname);
     $('.current.class-id').html(classid);
     $('tr:not(.template) td .remove-assignment').click();
+
+    // We need to reset the assignment ID so that previous classes'
+    // assignments don't affect how this new assignment's IDs are
+    // allocated.
+    g_nextAssignmentId = 0;
     for (var i in assignments) {
       var assignment = assignments[i];
       addNewAssignment(assignment.name, assignment.weight, assignment.score, assignment.id);

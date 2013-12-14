@@ -43,6 +43,8 @@ if (isset($_POST['classname']) && isset($_POST['assignments'])) {
 
     $stmt = $mysqli->prepare("INSERT INTO assignments (c_id, a_id, name, weight, score) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=?, weight=?, score=?");
 
+    // Build the list of referenced assignment IDs
+    $assignment_ids = array();
     foreach ($assignments as $assignment) {
       $stmt->bind_param("iisiisii",
         // Insert part
@@ -50,7 +52,15 @@ if (isset($_POST['classname']) && isset($_POST['assignments'])) {
         // Update part
         $assignment['name'], $assignment['weight'], $assignment['score']);
       $stmt->execute();
+      $assignment_ids[count($assignment_ids)] = intval($assignment['id']);
     }
+
+    // Remove any assignments that weren't referenced.
+    $assignment_ids_string = "(".implode(", ", $assignment_ids).")";
+    $stmt = $mysqli->prepare("DELETE FROM assignments WHERE c_id=? AND a_id NOT IN ".$assignment_ids_string);
+    echo "DELETE FROM assignments WHERE c_id=? AND a_id NOT IN ".$assignment_ids_string;
+    $stmt->bind_param("i", $classid);
+    $stmt->execute();
 
     // Return the class ID so that future saves will update instead of
     // add a new entry into the database.

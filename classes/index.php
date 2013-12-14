@@ -3,11 +3,14 @@
 This page will allow users to retrieve the list of classes they saved.
 */
 require_once('../backend/db.php');
+session_start();
 
-// u_id should be an int. If it can't be interpreted as an int, then
-// ignore the request and return an empty set.
-$u_id = (isset($_GET['u_id']) &&
-  is_numeric($_GET['u_id'])) ? intval($_GET['u_id']) : null;
+// This will be present if the user has logged in via facebook. If it
+// can't be interpreted as an int, then ignore the request and return an
+// empty set.
+$u_id = (isset($_SESSION['fb_189336231272827_user_id']) &&
+  is_numeric($_SESSION['fb_189336231272827_user_id'])) ?
+  intval($_SESSION['fb_189336231272827_user_id']) : null;
 
 if ($u_id === null) {
   echo json_encode(array());

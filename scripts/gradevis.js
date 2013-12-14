@@ -11,59 +11,6 @@ function main() {
   // Setup for facebook integration
   initFacebook();
 
-  var nextAssignmentId = 0;
-  function updatePrediction() {
-    var assignments = getAssignments($('table.score'));
-    var scores = calculateScores(assignments);
-    displayPrediction(scores, $(".prediction"));
-  }
-
-  // Wrapper around addNewAssignmentEvent so that the jQuery click
-  // event object isn't passed onto addNewAssignment.
-  function addNewAssignmentEvent() {
-    addNewAssignment();
-  }
-
-  function addNewAssignment(name, weight, score, id) {
-    // The template exists in the HTML file, so that we don't have to
-    // build the assignment row from scratch. This is more readable!
-    var assignmentRow = $('tr.template').clone();
-    assignmentRow.removeClass('template');
-
-    var inputs = assignmentRow.find('input[type=text]');
-    inputs.change(updatePrediction);
-
-    $(inputs.get(0)).val(name);
-    $(inputs.get(1)).val(weight);
-    $(inputs.get(2)).val(score);
-
-    if (id === undefined || id === null || id == "") {
-      id = nextAssignmentId++;
-    }
-    assignmentRow.find('.assignment-id').html(id);
-
-    assignmentRow.find('.remove-assignment').click(removeAssignment);
-
-    // The last child of the table body is the "Add new Assignment"
-    // button, and we definitely want the assignment to come before
-    // that.
-    $('table.score tbody tr:last-child').before(assignmentRow);
-
-    // The user probably wants to start changing the assignment details
-    // if name wasn't specified
-    if (!name || !name.length) {
-      assignmentRow.find('td:first-child input[type=text]').focus();
-    }
-  }
-
-  // Event handler to remove an assignment row from its owning table.
-  function removeAssignment() {
-    // Go up the DOM tree to find the table row
-    // table -> tbody -> tr -> td -> input(remove button)
-    $(this).parent().parent().remove();
-    updatePrediction();
-  }
-
   $('input[type=text]').change(updatePrediction);
   updatePrediction();
   $('.add-assignment').click(addNewAssignmentEvent);
@@ -97,6 +44,10 @@ var SCORE_ROW = {
   SCORE: 2,
 };
 
+/*********************************************
+Global Definitions
+*********************************************/
+var g_nextAssignmentId = 0;
 
 /*********************************************
 Function/Object Definitions
@@ -350,6 +301,57 @@ function showClasses(u_id) {
   })
 }
 
+// Wrapper around addNewAssignmentEvent so that the jQuery click
+// event object isn't passed onto addNewAssignment.
+function addNewAssignmentEvent() {
+  addNewAssignment();
+}
+
+function addNewAssignment(name, weight, score, id) {
+  // The template exists in the HTML file, so that we don't have to
+  // build the assignment row from scratch. This is more readable!
+  var assignmentRow = $('tr.template').clone();
+  assignmentRow.removeClass('template');
+
+  var inputs = assignmentRow.find('input[type=text]');
+  inputs.change(updatePrediction);
+
+  $(inputs.get(0)).val(name);
+  $(inputs.get(1)).val(weight);
+  $(inputs.get(2)).val(score);
+
+  if (id === undefined || id === null || id == "") {
+    id = g_nextAssignmentId++;
+  }
+  assignmentRow.find('.assignment-id').html(id);
+
+  assignmentRow.find('.remove-assignment').click(removeAssignment);
+
+  // The last child of the table body is the "Add new Assignment"
+  // button, and we definitely want the assignment to come before
+  // that.
+  $('table.score tbody tr:last-child').before(assignmentRow);
+
+  // The user probably wants to start changing the assignment details
+  // if name wasn't specified
+  if (!name || !name.length) {
+    assignmentRow.find('td:first-child input[type=text]').focus();
+  }
+}
+
+function updatePrediction() {
+  var assignments = getAssignments($('table.score'));
+  var scores = calculateScores(assignments);
+  displayPrediction(scores, $(".prediction"));
+}
+
+// Event handler to remove an assignment row from its owning table.
+function removeAssignment() {
+  // Go up the DOM tree to find the table row
+  // table -> tbody -> tr -> td -> input(remove button)
+  $(this).parent().parent().remove();
+  updatePrediction();
+}
 
 
 $(main)

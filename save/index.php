@@ -1,7 +1,7 @@
 <?php
 
 require_once('../backend/db.php');
-
+session_start();
 
 if (isset($_POST['classname']) && isset($_POST['assignments'])) {
   try {
@@ -12,9 +12,19 @@ if (isset($_POST['classname']) && isset($_POST['assignments'])) {
     $classname = $_POST['classname'];
     $assignments = $_POST['assignments'];
 
-    $mysqli = connect_to_db();
+    // This will be present if the user has logged in via facebook. If it
+    // can't be interpreted as an int, then ignore the request and return an
+    // empty set.
+    $u_id = (isset($_SESSION['fb_189336231272827_user_id']) &&
+      is_numeric($_SESSION['fb_189336231272827_user_id'])) ?
+      intval($_SESSION['fb_189336231272827_user_id']) : null;
 
-    $u_id = 0;
+    if ($u_id === null) {
+      echo "Not logged in";
+      exit(0);
+    }
+
+    $mysqli = connect_to_db();
 
     if ($classid === null) {
       // This is a new class

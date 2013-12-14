@@ -64,35 +64,6 @@ function main() {
     updatePrediction();
   }
 
-  function loadGradesEvent() {
-    var classid = parseInt($(this).find('.class-id').html());
-    if (!isNaN(classid)) {
-      loadGrades(classid);
-    }
-    return false;
-  }
-
-  function loadGrades(classid) {
-    $.ajax({
-      url: './load/',
-      dataType: 'json',
-      data: {
-        classid: classid,
-      }
-    }).success(function(data, status, jqXHR) {
-      var classname = data['classname'];
-      var assignments = data['assignments'];
-
-      $('.current.class-name').val(classname);
-      $('.current.class-id').html(classid);
-      $('tr:not(.template) td .remove-assignment').click();
-      for (var i in assignments) {
-        var assignment = assignments[i];
-        addNewAssignment(assignment.name, assignment.weight, assignment.score, assignment.id);
-      }
-    });
-  }
-
   $('input[type=text]').change(updatePrediction);
   updatePrediction();
   $('.add-assignment').click(addNewAssignmentEvent);
@@ -274,9 +245,8 @@ function initFacebook() {
   // Here we run a very simple test of the Graph API after login is successful.
   // This testAPI() function is only called in those cases.
   function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
-      console.log('Good to see you, ' + response.name + '.');
+      showClasses(response.id);
     });
   }
 
@@ -318,6 +288,66 @@ function initFacebook() {
       }
     });
   };
+}
+
+function loadGradesEvent() {
+  var classid = parseInt($(this).find('.class-id').html());
+  if (!isNaN(classid)) {
+    loadGrades(classid);
+  }
+  return false;
+}
+
+function loadGrades(classid) {
+  $.ajax({
+    url: './load/',
+    dataType: 'json',
+    data: {
+      classid: classid,
+    }
+  }).success(function(data, status, jqXHR) {
+    var classname = data['classname'];
+    var assignments = data['assignments'];
+
+    $('.current.class-name').val(classname);
+    $('.current.class-id').html(classid);
+    $('tr:not(.template) td .remove-assignment').click();
+    for (var i in assignments) {
+      var assignment = assignments[i];
+      addNewAssignment(assignment.name, assignment.weight, assignment.score, assignment.id);
+    }
+  });
+}
+
+function showClasses(u_id) {
+  $.ajax({
+    url: './classes/',
+    dataType: 'json',
+    data: {
+      u_id: u_id
+    }
+  }).success(function(classes, status, jqXHR) {
+    var classlist = $('.class-list');
+    $('li.load-grades:not(.template)').remove();
+
+    for (var i in classes) {
+      var classLink = $('.load-grades.template').clone();
+      classLink.find('.class-name').html(classes[i].name.length ? classes[i].name : "Untitled");
+      classLink.find('.class-id').html(classes[i].id);
+      classLink.removeClass('template');
+      classLink.click(loadGradesEvent);
+      classlist.append(classLink);
+    }
+
+    if (classes.length == 0) {
+      var classLink = $('.load-grades.template').clone();
+      classLink.find('.class-name').html("No classes found! Save a class to populate this list.");
+      classLink.removeClass('template')
+        .addClass('disabled')
+        .click(loadGradesEvent);
+      classlist.append(classLink);
+    }
+  })
 }
 
 

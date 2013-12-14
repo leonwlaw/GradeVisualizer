@@ -88,8 +88,13 @@ $classList = getClassList($u_id);
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 Load Grades <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu" role="menu">
-                <?php formatClassList($classList); ?>
+              <ul class="dropdown-menu class-list" role="menu">
+                <li class='load-grades template'>
+                  <a href="#" class='load-grades'>
+                    <span class="class-name">Untitled</span>
+                    <span class="class-id"></span>
+                  </a>
+                </li>
               </ul>
             </div>
             <div class="btn-group">

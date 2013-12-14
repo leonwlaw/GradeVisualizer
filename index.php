@@ -1,5 +1,6 @@
 <?php
 require_once('./backend/db.php');
+require_once('./backend/facebook.php');
 
 function getClassList($u_id) {
   $mysqli = connect_to_db();
@@ -28,6 +29,9 @@ function formatClassList($classList) {
     ?><li class='disabled'><a href="#">No classes found.</a></li><?
   }
 }
+
+$facebook = connect_to_facebook();
+$user = $facebook->getUser();
 
 $u_id = 0;
 $classList = getClassList($u_id);
@@ -63,14 +67,18 @@ $classList = getClassList($u_id);
     <script src="./scripts/gradevis.js" type="text/javascript"></script>
   </head>
   <body>
-    <div class="container">
+    <div class="container header">
       <div class="row">
-        <div class="col-md-12">
-          <div class="header">
+        <div class="col-md-6 header">
             <h1>GradeVisualizer</h1>
             <div>Your grade in action!</div>
-          </div>
         </div>
+        <div class="col-md-6 login header">
+          <div id="fb-root"></div>
+          <fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-6 class-heading">
           <h2 class="class-heading">Your Grades for <input type="text" class="form-control current class-name" placeholder="Class Name" /><span class="current class-id"></span></h2>
         </div>
